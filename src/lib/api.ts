@@ -14,10 +14,7 @@ const api = axios.create({
 
 // Add request interceptor to add auth token
 api.interceptors.request.use((config) => {
-  const token = Cookies.get('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  // TODO: Add auth token
   return config;
 });
 
@@ -32,11 +29,6 @@ api.interceptors.response.use(
 
       try {
         const response = await api.post<AuthResponse>('/auth/refresh/');
-        const { accessToken } = response.data;
-        
-        Cookies.set('accessToken', accessToken);
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-        
         return api(originalRequest);
       } catch (refreshError) {
         // If refresh fails, redirect to login
@@ -54,28 +46,16 @@ api.interceptors.response.use(
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>('/auth/login/', credentials);
-    const { accessToken, refreshToken } = response.data;
-    
-    Cookies.set('accessToken', accessToken);
-    Cookies.set('refreshToken', refreshToken);
-    
     return response.data;
   },
 
   async register(credentials: RegisterCredentials): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>('/auth/register/', credentials);
-    // const { accessToken, refreshToken } = response.data;
-    
-    // Cookies.set('accessToken', accessToken);
-    // Cookies.set('refreshToken', refreshToken);
-    
     return response.data;
   },
 
   async logout(): Promise<void> {
-    await api.post('/auth/logout/   ');
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
+    await api.post('/auth/logout/');
   },
 
   async getCurrentUser() {

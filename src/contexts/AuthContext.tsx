@@ -2,14 +2,14 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User } from '@/types/auth';
+import { RegisterFormData, User } from '@/types/auth';
 import { authService } from '@/lib/api';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, username: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
+  register: (data: RegisterFormData) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (data: Partial<User>) => Promise<void>;
 }
@@ -36,14 +36,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const login = async (email: string, password: string) => {
-    const response = await authService.login({ email, password });
+  const login = async (username: string, password: string) => {
+    const response = await authService.login({ username, password });
     setUser(response.user);
     router.push('/dashboard');
   };
 
-  const register = async (email: string, password: string, username: string) => {
-    const response = await authService.register({ email, password, username });
+  const register = async (data: RegisterFormData) => {
+    const response = await authService.register(data);
     setUser(response.user);
     router.push('/dashboard');
   };

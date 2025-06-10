@@ -6,22 +6,22 @@ import * as yup from 'yup';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 
-const schema = yup.object({
-  email: yup.string().email('Invalid email').required('Email is required'),
+const schema = yup.object().shape({
+  username: yup.string().required('Username is required'),
   password: yup.string().required('Password is required'),
-}).required();
+});
 
 type LoginFormData = yup.InferType<typeof schema>;
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
     resolver: yupResolver(schema)
   });
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data.email, data.password);
+      await login(data.username, data.password);
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -40,13 +40,13 @@ export default function LoginPage() {
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
               <input
-                {...register('email')}
-                type="email"
+                {...register('username')}
+                type="text"
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                placeholder="Username"
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>
               )}
             </div>
             <div>
@@ -66,9 +66,10 @@ export default function LoginPage() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isSubmitting}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign in
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
 

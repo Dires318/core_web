@@ -9,15 +9,17 @@ import { useEffect } from 'react';
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required(),
   username: yup.string().min(3, 'Username must be at least 3 characters').required(),
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
+  first_name: yup.string().required(),
+  last_name: yup.string().required(),
+  middle_name: yup.string().required(),
 }).required();
 
 type ProfileFormData = {
   email: string;
   username: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
 };
 
 export default function ProfilePage() {
@@ -31,8 +33,9 @@ export default function ProfilePage() {
       reset({
         email: user.email,
         username: user.username,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
+        first_name: user.first_name || '',
+        last_name: user.last_name || '',
+        middle_name: user.middle_name || '',
       });
     }
   }, [user, reset]);
@@ -88,18 +91,27 @@ export default function ProfilePage() {
               )}
             </div>
             <div>
-              <label htmlFor="firstName" className="sr-only">First Name</label>
+              <label htmlFor="first_name" className="sr-only">First Name</label>
               <input
-                {...register('firstName')}
+                {...register('first_name')}
                 type="text"
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="First Name"
               />
             </div>
             <div>
-              <label htmlFor="lastName" className="sr-only">Last Name</label>
+              <label htmlFor="middle_name" className="sr-only">Middle Name</label>
               <input
-                {...register('lastName')}
+                {...register('middle_name')}
+                type="text"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Middle Name"
+              />
+            </div>
+            <div>
+              <label htmlFor="last_name" className="sr-only">Last Name</label>
+              <input
+                {...register('last_name')}
                 type="text"
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Last Name"

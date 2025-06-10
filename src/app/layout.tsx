@@ -7,7 +7,7 @@ import Navigation from '@/components/Navigation';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next.js Auth App",
+  title: "Core Auth App",
   description: "A Next.js application with JWT authentication",
 };
 

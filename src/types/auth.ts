@@ -2,12 +2,23 @@ export interface User {
   id: string;
   email: string;
   username: string;
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  middle_name?: string;
+  last_name?: string;
+
+}
+
+export type RegisterFormData = {
+  email: string;
+  password: string;
+  username: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
 }
 
 export interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 

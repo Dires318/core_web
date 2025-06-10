@@ -31,7 +31,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const response = await api.post<AuthResponse>('/auth/refresh');
+        const response = await api.post<AuthResponse>('/auth/refresh/');
         const { accessToken } = response.data;
         
         Cookies.set('accessToken', accessToken);
@@ -40,7 +40,9 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         // If refresh fails, redirect to login
-        window.location.href = '/login';
+        if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
+          window.location.href = '/login';
+        }
         return Promise.reject(refreshError);
       }
     }
@@ -51,7 +53,7 @@ api.interceptors.response.use(
 
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/login', credentials);
+    const response = await api.post<AuthResponse>('/auth/login/', credentials);
     const { accessToken, refreshToken } = response.data;
     
     Cookies.set('accessToken', accessToken);
@@ -61,17 +63,17 @@ export const authService = {
   },
 
   async register(credentials: RegisterCredentials): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/register', credentials);
-    const { accessToken, refreshToken } = response.data;
+    const response = await api.post<AuthResponse>('/auth/register/', credentials);
+    // const { accessToken, refreshToken } = response.data;
     
-    Cookies.set('accessToken', accessToken);
-    Cookies.set('refreshToken', refreshToken);
+    // Cookies.set('accessToken', accessToken);
+    // Cookies.set('refreshToken', refreshToken);
     
     return response.data;
   },
 
   async logout(): Promise<void> {
-    await api.post('/auth/logout');
+    await api.post('/auth/logout/   ');
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
   },

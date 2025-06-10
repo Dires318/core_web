@@ -10,7 +10,7 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-            Welcome to Next.js Auth App
+            Welcome to Core Auth App
           </h1>
           <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
             A secure authentication system built with Next.js and JWT
